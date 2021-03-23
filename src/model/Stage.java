@@ -14,10 +14,10 @@ public class Stage {
     }
 
     public Integer getStageId() {
-        return this.stageId;
+        return stageId;
     }
 
     public String getStageName() {
-        return this.stageName;
+        return stageName;
     }
 }

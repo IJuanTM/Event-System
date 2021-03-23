@@ -14,7 +14,6 @@ public class Artist implements Comparable<Artist> {
         this.artistId = artistId;
         this.artistName = artistName;
         this.artistEvent = artistEvent;
-
         Collections.sort(artistArray);
     }
 
@@ -29,16 +28,8 @@ public class Artist implements Comparable<Artist> {
         return artistList;
     }
 
-    public Integer getArtistId() {
-        return this.artistId;
-    }
-
     public String getArtistName() {
-        return this.artistName;
-    }
-
-    public Event getArtistEvent() {
-        return this.artistEvent;
+        return artistName;
     }
 
     @Override

@@ -1,27 +1,28 @@
 package model;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
 
 abstract public class Event implements Comparable<Event> {
     private static final Scanner scanner = new Scanner(System.in);
+    private static final LocalDate date = LocalDate.now();
 
     private final Integer eventId;
     private final String eventName;
     private final Integer eventType;
     private final Stage eventStage;
-    private final String eventDate;
+    private final LocalDate eventDate;
 
     public static final ArrayList<Event> eventArray = new ArrayList<>();
 
-    public Event(Integer eventId, String eventName, Integer eventType, Stage eventStage, String eventDate) {
+    public Event(Integer eventId, String eventName, Integer eventType, Stage eventStage, LocalDate eventDate) {
         this.eventId = eventId;
         this.eventName = eventName;
         this.eventType = eventType;
         this.eventStage = eventStage;
         this.eventDate = eventDate;
-
         Collections.sort(eventArray);
     }
 
@@ -43,7 +44,9 @@ abstract public class Event implements Comparable<Event> {
 
     public static void listEvents() {
         System.out.println(Color.GREEN + "\nUpcoming events: " + Color.RESET);
-        for (Event event : Event.eventArray) System.out.println("Id: " + Color.YELLOW + event.eventId + Color.RESET + "\tDate: " + Color.BLUE + event.eventDate + Color.RESET + "\tName: " + Color.PURPLE + event.eventName + Color.RESET);
+        for (Event event : Event.eventArray)
+            if (event.eventDate.isAfter(date)) System.out.println("Id: " + Color.YELLOW + event.eventId + Color.RESET + "\tDate: " +
+                    Color.BLUE + event.eventDate + Color.RESET + "\tName: " + Color.PURPLE + event.eventName + Color.RESET);
     }
 
     public void printEventInfo(Event event) {
@@ -53,8 +56,12 @@ abstract public class Event implements Comparable<Event> {
         System.out.println(Color.GREEN + "Type: " + Color.RESET + castTypeName());
         System.out.println(Color.RED + "Stage: " + Color.RESET + eventStage.getStageName());
         System.out.println(Color.BLUE + "Date: " + Color.RESET + eventDate);
-        System.out.println(Color.CYAN + "\nArtist(s):" + Color.RESET);
+        if (artists.size() == 1) System.out.println(Color.CYAN + "\nArtist:" + Color.RESET);
+        else System.out.println(Color.CYAN + "\nArtists:" + Color.RESET);
         for (Artist artist : artists) System.out.println("- " + artist.getArtistName());
+        System.out.print(Color.YELLOW + "\nBack to menu (ENTER): " + Color.RESET);
+        scanner.nextLine();
+        scanner.nextLine();
     }
 
     public String castTypeName() {
@@ -62,11 +69,19 @@ abstract public class Event implements Comparable<Event> {
     }
 
     public Integer getEventId() {
-        return this.eventId;
+        return eventId;
+    }
+
+    public String getEventName() {
+        return eventName;
+    }
+
+    public LocalDate getEventDate() {
+        return eventDate;
     }
 
     @Override
     public int compareTo(Event other) {
-        return eventId.compareTo(other.eventId);
+        return eventDate.compareTo(other.eventDate);
     }
 }
