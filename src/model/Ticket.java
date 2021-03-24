@@ -1,8 +1,6 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Scanner;
+import java.util.*;
 
 public class Ticket implements Comparable<Ticket> {
     private static final Scanner scanner = new Scanner(System.in);
@@ -22,33 +20,81 @@ public class Ticket implements Comparable<Ticket> {
 
     public static void ticketMenu() {
         while (true) {
-            System.out.println("\nTickets:");
-            System.out.println("=========================");
-            for (Ticket ticket : Ticket.ticketArray) System.out.println(Color.CYAN + ticket.ticketId + ") " + Color.RESET + ticket.ticketGuest.getGuestName());
-            System.out.println(Color.YELLOW + "0) " + Color.RESET + "Go back");
-            System.out.println("=========================");
-            System.out.print("Choose option: ");
-            int input = scanner.nextInt();
-            if (input == 0) return;
-            else if (input <= ticketArray.size()) {
-                for (Ticket ticket : ticketArray) if (input == ticket.ticketId) printTicketInfo(ticket);
-            } else System.out.println(Color.RED + "\nInvalid input, please try again." + Color.RESET);
+            try {
+                System.out.println("\nTickets:");
+                System.out.println("------------------------");
+                for (Ticket ticket : Ticket.ticketArray) System.out.println(Color.CYAN + ticket.ticketId + ") " + Color.RESET + ticket.ticketGuest.getGuestName());
+                System.out.println(Color.YELLOW + "0) " + Color.RESET + "Go back");
+                System.out.println("------------------------");
+                System.out.print("Choose option: ");
+                int input = scanner.nextInt();
+                scanner.nextLine();
+                if (input == 0) return;
+                else if (input <= ticketArray.size()) {
+                    for (Ticket ticket : ticketArray) if (input == ticket.ticketId) printTicketInfo(ticket);
+                } else System.out.println(Color.RED + "\nInvalid input, please try again." + Color.RESET);
+            } catch (InputMismatchException ime) {
+                System.out.println(Color.RED + "\nWrong input type! Try again." + Color.RESET);
+                scanner.nextLine();
+            }
         }
     }
 
-    public static void listTickets() {
-        System.out.println(Color.GREEN + "\nTickets: " + Color.RESET);
-        for (Ticket ticket : Ticket.ticketArray) System.out.println("Id: " + Color.YELLOW + ticket.ticketId + Color.RESET + "\tGuest: " + Color.PURPLE + ticket.ticketGuest.getGuestName() + Color.RESET);
-    }
-
     public static void printTicketInfo(Ticket ticket) {
-        System.out.println(Color.YELLOW + "\nId: " + Color.RESET + ticket.ticketId);
+        System.out.println("\nTicket info:");
+        System.out.println("=========================");
+        System.out.println(Color.YELLOW + "Id: " + Color.RESET + ticket.ticketId);
         System.out.println(Color.PURPLE + "Guest: " + Color.RESET + ticket.ticketGuest.getGuestName());
         System.out.println(Color.RED + "Event: " + Color.RESET + ticket.ticketEvent.getEventName());
         System.out.println(Color.BLUE + "Date: " + Color.RESET + ticket.ticketEvent.getEventDate());
-        System.out.print(Color.YELLOW + "\nBack to menu (ENTER): " + Color.RESET);
+        System.out.print("\nBack to menu (" + Color.YELLOW + "ENTER" + Color.RESET + "): ");
         scanner.nextLine();
-        scanner.nextLine();
+    }
+
+    public static void addTicket() {
+        Event getEvent = null;
+        Guest getGuest = null;
+        System.out.println("\nAdd ticket:");
+        System.out.println("=========================");
+        try {
+            // New ticketId
+            Integer nextId = ticketArray.size() + 1;
+            System.out.println(Color.YELLOW + "TicketId: " + Color.RESET + nextId);
+
+            // Input guestId
+            System.out.print(Color.PURPLE + "GuestId: " + Color.RESET);
+            Integer inputGuest = scanner.nextInt();
+            scanner.nextLine();
+
+            // Get guest object by Id
+            if (!(inputGuest >= Guest.guestArray.size() + 1)) {
+                for (Guest guest : Guest.guestArray) if (guest.getGuestId().equals(inputGuest)) getGuest = guest;
+            } else throw new NoSuchElementException();
+
+            // Input eventId
+            System.out.print(Color.RED + "EventId: " + Color.RESET);
+            Integer inputEvent = scanner.nextInt();
+            scanner.nextLine();
+
+            // Get event object by Id
+            if (!(inputEvent >= Event.eventArray.size() + 1)) {
+                for (Event event : Event.eventArray) if (event.getEventId().equals(inputEvent)) getEvent = event;
+            } else throw new NoSuchElementException();
+
+            // Push new ticket to array
+            ticketArray.add(new Ticket(nextId, getGuest, getEvent));
+
+            // Print success
+            System.out.println(Color.GREEN + "\nSuccess!" + Color.RESET);
+
+            // Print added ticket
+            for (Ticket ticket : ticketArray) if (ticket.ticketId.equals(nextId)) printTicketInfo(ticket);
+        } catch (InputMismatchException ime) {
+            System.out.println(Color.RED + "\nWrong input type! Try again." + Color.RESET);
+            scanner.nextLine();
+        } catch (NoSuchElementException nse) {
+            System.out.println(Color.RED + "\nThis input does not exist! Try again." + Color.RESET);
+        }
     }
 
     @Override

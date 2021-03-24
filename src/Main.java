@@ -1,6 +1,7 @@
 import model.*;
 
 import java.time.LocalDate;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
@@ -20,24 +21,64 @@ public class Main {
 
     private static void mainMenu() {
         while (true) {
-            System.out.println("\nMain menu:");
-            System.out.println("-----------------------------");
-            System.out.println("| " + Color.CYAN + "1)" + Color.RESET + " View guest tickets \t|");
-            System.out.println("| " + Color.CYAN + "2)" + Color.RESET + " View event info \t\t|");
-            System.out.println("| " + Color.CYAN + "3)" + Color.RESET + " List upcoming events \t|");
-            System.out.println("| " + Color.CYAN + "4)" + Color.RESET + " List all artists \t\t|");
-            System.out.println("| " + Color.CYAN + "5)" + Color.RESET + " List all tickets \t\t|");
-            System.out.println("| " + Color.RED + "0)" + Color.RESET + " Exit program \t\t\t|");
-            System.out.println("-----------------------------");
-            System.out.print("Choose option: ");
-            switch (scanner.nextInt()) {
-                case 1 -> Ticket.ticketMenu();
-                case 2 -> Event.eventMenu();
-                case 3 -> Event.listEvents();
-                case 4 -> Artist.listArtists();
-                case 5 -> Ticket.listTickets();
-                case 0 -> System.exit(0);
-                default -> System.out.println(Color.RED + "\nThis option does not exist, please try again." + Color.RESET);
+            try {
+                System.out.println("\nMain menu:");
+                System.out.println("-----------------------------");
+                System.out.println("| " + Color.BLUE + "1)" + Color.RESET + " Add items to system \t|");
+                System.out.println("| " + Color.CYAN + "2)" + Color.RESET + " View guest tickets \t|");
+                System.out.println("| " + Color.CYAN + "3)" + Color.RESET + " View event info \t\t|");
+                System.out.println("| " + Color.CYAN + "4)" + Color.RESET + " List upcoming events \t|");
+                System.out.println("| " + Color.CYAN + "5)" + Color.RESET + " List all guests \t\t|");
+                System.out.println("| " + Color.CYAN + "6)" + Color.RESET + " List all artists \t\t|");
+                System.out.println("| " + Color.CYAN + "7)" + Color.RESET + " List all stages \t\t|");
+                System.out.println("| " + Color.RED + "0)" + Color.RESET + " Exit program \t\t\t|");
+                System.out.println("-----------------------------");
+                System.out.print("Choose option: ");
+                switch (scanner.nextInt()) {
+                    case 1 -> addMenu();
+                    case 2 -> Ticket.ticketMenu();
+                    case 3 -> Event.eventMenu();
+                    case 4 -> Event.listEvents();
+                    case 5 -> Guest.listGuests();
+                    case 6 -> Artist.listArtists();
+                    case 7 -> Stage.listStages();
+                    case 0 -> System.exit(0);
+                    default -> System.out.println(Color.RED + "\nThis option does not exist, please try again." + Color.RESET);
+                }
+            } catch (InputMismatchException ime) {
+                System.out.println(Color.RED + "\nWrong input type! Try again." + Color.RESET);
+                scanner.nextLine();
+            }
+        }
+    }
+
+    private static void addMenu() {
+        while (true) {
+            try {
+                System.out.println("\nAdd menu:");
+                System.out.println("-------------------------");
+                System.out.println("| " + Color.CYAN + "1)" + Color.RESET + " Add new ticket \t|");
+                System.out.println("| " + Color.CYAN + "2)" + Color.RESET + " Add new guest \t\t|");
+                System.out.println("| " + Color.CYAN + "3)" + Color.RESET + " Add new artist \t|");
+                System.out.println("| " + Color.CYAN + "4)" + Color.RESET + " Add new event \t\t|");
+                System.out.println("| " + Color.CYAN + "5)" + Color.RESET + " Add new stage \t\t|");
+                System.out.println("| " + Color.YELLOW + "0)" + Color.RESET + " Go back \t\t\t|");
+                System.out.println("-------------------------");
+                System.out.print("Choose option: ");
+                switch (scanner.nextInt()) {
+                    case 1 -> Ticket.addTicket();
+                    case 2 -> Guest.addGuest();
+                    case 3 -> Artist.addArtist();
+                    case 4 -> Event.addEvent();
+                    case 5 -> Stage.addStage();
+                    case 0 -> {
+                        return;
+                    }
+                    default -> System.out.println(Color.RED + "\nThis option does not exist, please try again." + Color.RESET);
+                }
+            } catch (InputMismatchException ime) {
+                System.out.println(Color.RED + "\nWrong input type! Try again." + Color.RESET);
+                scanner.nextLine();
             }
         }
     }
@@ -53,10 +94,10 @@ public class Main {
     private static void fillEvents() {
         for (Stage stage : Stage.stageArray) {
             if (stage.getStageId() == 1) {
-                Event.eventArray.add(new Gig(5, "Ed Sheeran Tour 2021", 2, stage, LocalDate.parse("2021-07-12")));
-                Event.eventArray.add(new Gig(3, "Elton John Tour", 2, stage, LocalDate.parse("2021-04-22")));
-            } else if (stage.getStageId() == 2) Event.eventArray.add(new Festival(2, "Pinkpop 2021", 1, stage, LocalDate.parse("2021-08-22")));
-            else if (stage.getStageId() == 3) Event.eventArray.add(new Festival(1, "Lowlands 2021", 1, stage, LocalDate.parse("2021-05-07")));
+                Event.eventArray.add(new Gig(2, "Ed Sheeran Tour 2021", 2, stage, LocalDate.parse("2021-07-12")));
+                Event.eventArray.add(new Gig(5, "Elton John Tour", 2, stage, LocalDate.parse("2021-04-22")));
+            } else if (stage.getStageId() == 2) Event.eventArray.add(new Festival(1, "Pinkpop 2021", 1, stage, LocalDate.parse("2021-08-22")));
+            else if (stage.getStageId() == 3) Event.eventArray.add(new Festival(3, "Lowlands 2021", 1, stage, LocalDate.parse("2021-05-07")));
             else if (stage.getStageId() == 4) Event.eventArray.add(new Gig(4, "Red Hot Chilli Peppers Live", 2, stage, LocalDate.parse("2021-05-02")));
             else if (stage.getStageId() == 5) Event.eventArray.add(new Show(6, "Queen Tribute Concert", 3, stage, LocalDate.parse("2021-03-12")));
         }
