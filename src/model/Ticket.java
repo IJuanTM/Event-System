@@ -18,6 +18,10 @@ public class Ticket implements Comparable<Ticket> {
         Collections.sort(ticketArray);
     }
 
+    /**
+     * Ticket methods
+     */
+
     public static void ticketMenu() {
         while (true) {
             try {
@@ -58,7 +62,7 @@ public class Ticket implements Comparable<Ticket> {
         System.out.println("=========================");
         try {
             // New ticketId
-            Integer nextId = ticketArray.size() + 1;
+            Integer nextId = Collections.max(ticketArray).ticketId + 1;
             System.out.println(Color.YELLOW + "TicketId: " + Color.RESET + nextId);
 
             // Input guestId
@@ -85,7 +89,7 @@ public class Ticket implements Comparable<Ticket> {
             ticketArray.add(new Ticket(nextId, getGuest, getEvent));
 
             // Print success
-            System.out.println(Color.GREEN + "\nSuccess!" + Color.RESET);
+            System.out.println(Color.GREEN + "\nTicket added!" + Color.RESET);
 
             // Print added ticket
             for (Ticket ticket : ticketArray) if (ticket.ticketId.equals(nextId)) printTicketInfo(ticket);
@@ -96,6 +100,39 @@ public class Ticket implements Comparable<Ticket> {
             System.out.println(Color.RED + "\nThis input does not exist! Try again." + Color.RESET);
         }
     }
+
+    public static void removeTicket() {
+        Ticket getTicket = null;
+        System.out.println("\nRemove ticket:");
+        System.out.println("=========================");
+        try {
+            // Input ticketId
+            System.out.print(Color.YELLOW + "TicketId: " + Color.RESET);
+            Integer inputId = scanner.nextInt();
+            scanner.nextLine();
+
+            // Get ticket object by Id
+            if (!(inputId > Collections.max(ticketArray).ticketId)) {
+                for (Ticket ticket : Ticket.ticketArray) if (ticket.ticketId.equals(inputId)) getTicket = ticket;
+            } else throw new NoSuchElementException();
+
+            // Remove ticket from array
+            ticketArray.remove(getTicket);
+
+            // Print success
+            System.out.println(Color.GREEN + "\nTicket " + Color.YELLOW + inputId + Color.GREEN + " removed!" + Color.RESET);
+
+        } catch (InputMismatchException ime) {
+            System.out.println(Color.RED + "\nWrong input type! Try again." + Color.RESET);
+            scanner.nextLine();
+        } catch (NoSuchElementException nse) {
+            System.out.println(Color.RED + "\nThis input does not exist! Try again." + Color.RESET);
+        }
+    }
+
+    /**
+     * Override Comparable to compare values to array items
+     */
 
     @Override
     public int compareTo(Ticket other) {

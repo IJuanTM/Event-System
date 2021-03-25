@@ -1,10 +1,8 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import java.util.*;
 
-public class Stage {
+public class Stage implements Comparable<Stage> {
     private static final Scanner scanner = new Scanner(System.in);
 
     private final Integer stageId;
@@ -17,8 +15,12 @@ public class Stage {
         this.stageName = stageName;
     }
 
+    /**
+     * Stage methods
+     */
+
     public static void listStages() {
-        System.out.println(Color.GREEN + "\nStages: " + Color.RESET);
+        System.out.println(Color.GREEN + "\nStages in system: " + Color.RESET + "(" + stageArray.size() + ")");
         for (Stage stage : Stage.stageArray) System.out.println("Id: " + Color.YELLOW + stage.stageId + Color.RESET + "\tName: " + Color.PURPLE + stage.stageName + Color.RESET);
         System.out.print("\nBack to menu (" + Color.YELLOW + "ENTER" + Color.RESET + "): ");
         scanner.nextLine();
@@ -37,8 +39,8 @@ public class Stage {
         System.out.println("\nAdd stage:");
         System.out.println("=========================");
         try {
-            // new stageId
-            Integer nextId = stageArray.size() + 1;
+            // New stageId
+            Integer nextId = Collections.max(stageArray).stageId + 1;
             System.out.println(Color.YELLOW + "StageId: " + Color.RESET + nextId);
 
             // Input stageName
@@ -49,7 +51,7 @@ public class Stage {
             stageArray.add(new Stage(nextId, inputName));
 
             // Print success
-            System.out.println(Color.GREEN + "\nSuccess!" + Color.RESET);
+            System.out.println(Color.GREEN + "\nStage added!" + Color.RESET);
 
             // Print added stage
             for (Stage stage : stageArray) if (stage.stageId.equals(nextId)) printStageInfo(stage);
@@ -59,11 +61,53 @@ public class Stage {
         }
     }
 
+    public static void removeStage() {
+        Stage getStage = null;
+        System.out.println("\nRemove stage:");
+        System.out.println("=========================");
+        try {
+            // Input stageId
+            System.out.print(Color.YELLOW + "StageId: " + Color.RESET);
+            Integer inputId = scanner.nextInt();
+            scanner.nextLine();
+
+            // Get stage object by Id
+            if (!(inputId > Collections.max(stageArray).stageId)) {
+                for (Stage stage : Stage.stageArray) if (stage.stageId.equals(inputId)) getStage = stage;
+            } else throw new NoSuchElementException();
+
+            // Remove stage from array
+            stageArray.remove(getStage);
+
+            // Print success
+            System.out.println(Color.GREEN + "\nStage " + Color.YELLOW + inputId + Color.GREEN + " removed!" + Color.RESET);
+
+        } catch (InputMismatchException ime) {
+            System.out.println(Color.RED + "\nWrong input type! Try again." + Color.RESET);
+            scanner.nextLine();
+        } catch (NoSuchElementException nse) {
+            System.out.println(Color.RED + "\nThis input does not exist! Try again." + Color.RESET);
+        }
+    }
+
+    /**
+     * Getters and setters
+     */
+
     public Integer getStageId() {
         return stageId;
     }
 
     public String getStageName() {
         return stageName;
+    }
+
+    /**
+     * Override Comparable to compare values to array items
+     */
+
+    @Override
+    public int compareTo(Stage other) {
+        return stageId.compareTo(other.stageId);
     }
 }

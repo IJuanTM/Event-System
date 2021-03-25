@@ -8,10 +8,10 @@ public class Main {
     private static final Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
+        fillGuests();
         fillStages();
         fillEvents();
         fillArtists();
-        fillGuests();
         fillTickets();
 
         System.out.println(Color.GREEN + "\nWelcome to the Event System\u2122" + Color.RESET);
@@ -19,30 +19,36 @@ public class Main {
         mainMenu();
     }
 
+    /**
+     * Menus
+     */
+
     private static void mainMenu() {
         while (true) {
             try {
-                System.out.println("\nMain menu:");
-                System.out.println("-----------------------------");
-                System.out.println("| " + Color.BLUE + "1)" + Color.RESET + " Add items to system \t|");
-                System.out.println("| " + Color.CYAN + "2)" + Color.RESET + " View guest tickets \t|");
-                System.out.println("| " + Color.CYAN + "3)" + Color.RESET + " View event info \t\t|");
-                System.out.println("| " + Color.CYAN + "4)" + Color.RESET + " List upcoming events \t|");
-                System.out.println("| " + Color.CYAN + "5)" + Color.RESET + " List all guests \t\t|");
-                System.out.println("| " + Color.CYAN + "6)" + Color.RESET + " List all artists \t\t|");
-                System.out.println("| " + Color.CYAN + "7)" + Color.RESET + " List all stages \t\t|");
-                System.out.println("| " + Color.RED + "0)" + Color.RESET + " Exit program \t\t\t|");
-                System.out.println("-----------------------------");
+                System.out.println(Color.YELLOW + "\nMain menu:" + Color.RESET);
+                System.out.println(Color.YELLOW + "---------------------------------" + Color.RESET);
+                System.out.println(Color.YELLOW + "| " + Color.BLUE + "1)" + Color.RESET + " Add items to system\t\t" + Color.YELLOW + "|" + Color.RESET);
+                System.out.println(Color.YELLOW + "| " + Color.PURPLE + "2)" + Color.RESET + " Remove items from system\t" + Color.YELLOW + "|" + Color.RESET);
+                System.out.println(Color.YELLOW + "| " + Color.CYAN + "3)" + Color.RESET + " View guest tickets\t\t\t" + Color.YELLOW + "|" + Color.RESET);
+                System.out.println(Color.YELLOW + "| " + Color.CYAN + "4)" + Color.RESET + " View event info\t\t\t" + Color.YELLOW + "|" + Color.RESET);
+                System.out.println(Color.YELLOW + "| " + Color.CYAN + "5)" + Color.RESET + " List upcoming events\t\t" + Color.YELLOW + "|" + Color.RESET);
+                System.out.println(Color.YELLOW + "| " + Color.CYAN + "6)" + Color.RESET + " List all guests\t\t\t" + Color.YELLOW + "|" + Color.RESET);
+                System.out.println(Color.YELLOW + "| " + Color.CYAN + "7)" + Color.RESET + " List all artists\t\t\t" + Color.YELLOW + "|" + Color.RESET);
+                System.out.println(Color.YELLOW + "| " + Color.CYAN + "8)" + Color.RESET + " List all stages\t\t\t" + Color.YELLOW + "|" + Color.RESET);
+                System.out.println(Color.YELLOW + "| " + Color.RED + "0)" + Color.RESET + " Exit program\t\t\t\t" + Color.YELLOW + "|" + Color.RESET);
+                System.out.println(Color.YELLOW + "---------------------------------" + Color.RESET);
                 System.out.print("Choose option: ");
                 switch (scanner.nextInt()) {
-                    case 1 -> addMenu();
-                    case 2 -> Ticket.ticketMenu();
-                    case 3 -> Event.eventMenu();
-                    case 4 -> Event.listEvents();
-                    case 5 -> Guest.listGuests();
-                    case 6 -> Artist.listArtists();
-                    case 7 -> Stage.listStages();
                     case 0 -> System.exit(0);
+                    case 1 -> addMenu();
+                    case 2 -> removeMenu();
+                    case 3 -> Ticket.ticketMenu();
+                    case 4 -> Event.eventMenu();
+                    case 5 -> Event.listEvents();
+                    case 6 -> Guest.listGuests();
+                    case 7 -> Artist.listArtists();
+                    case 8 -> Stage.listStages();
                     default -> System.out.println(Color.RED + "\nThis option does not exist, please try again." + Color.RESET);
                 }
             } catch (InputMismatchException ime) {
@@ -55,25 +61,25 @@ public class Main {
     private static void addMenu() {
         while (true) {
             try {
-                System.out.println("\nAdd menu:");
-                System.out.println("-------------------------");
-                System.out.println("| " + Color.CYAN + "1)" + Color.RESET + " Add new ticket \t|");
-                System.out.println("| " + Color.CYAN + "2)" + Color.RESET + " Add new guest \t\t|");
-                System.out.println("| " + Color.CYAN + "3)" + Color.RESET + " Add new artist \t|");
-                System.out.println("| " + Color.CYAN + "4)" + Color.RESET + " Add new event \t\t|");
-                System.out.println("| " + Color.CYAN + "5)" + Color.RESET + " Add new stage \t\t|");
-                System.out.println("| " + Color.YELLOW + "0)" + Color.RESET + " Go back \t\t\t|");
-                System.out.println("-------------------------");
+                System.out.println(Color.BLUE + "\nAdd menu:" + Color.RESET);
+                System.out.println(Color.BLUE + "-------------------------" + Color.RESET);
+                System.out.println(Color.BLUE + "| " + Color.CYAN + "1)" + Color.RESET + " Add new ticket\t\t" + Color.BLUE + "|" + Color.RESET);
+                System.out.println(Color.BLUE + "| " + Color.CYAN + "2)" + Color.RESET + " Add new guest\t\t" + Color.BLUE + "|" + Color.RESET);
+                System.out.println(Color.BLUE + "| " + Color.CYAN + "3)" + Color.RESET + " Add new artist\t\t" + Color.BLUE + "|" + Color.RESET);
+                System.out.println(Color.BLUE + "| " + Color.CYAN + "4)" + Color.RESET + " Add new event\t\t" + Color.BLUE + "|" + Color.RESET);
+                System.out.println(Color.BLUE + "| " + Color.CYAN + "5)" + Color.RESET + " Add new stage\t\t" + Color.BLUE + "|" + Color.RESET);
+                System.out.println(Color.BLUE + "| " + Color.YELLOW + "0)" + Color.RESET + " Go back\t\t\t" + Color.BLUE + "|" + Color.RESET);
+                System.out.println(Color.BLUE + "-------------------------" + Color.RESET);
                 System.out.print("Choose option: ");
                 switch (scanner.nextInt()) {
+                    case 0 -> {
+                        return;
+                    }
                     case 1 -> Ticket.addTicket();
                     case 2 -> Guest.addGuest();
                     case 3 -> Artist.addArtist();
                     case 4 -> Event.addEvent();
                     case 5 -> Stage.addStage();
-                    case 0 -> {
-                        return;
-                    }
                     default -> System.out.println(Color.RED + "\nThis option does not exist, please try again." + Color.RESET);
                 }
             } catch (InputMismatchException ime) {
@@ -81,6 +87,54 @@ public class Main {
                 scanner.nextLine();
             }
         }
+    }
+
+    private static void removeMenu() {
+        while (true) {
+            try {
+                System.out.println(Color.PURPLE + "\nRemove menu:" + Color.RESET);
+                System.out.println(Color.PURPLE + "-------------------------" + Color.RESET);
+                System.out.println(Color.PURPLE + "| " + Color.CYAN + "1)" + Color.RESET + " Remove ticket\t\t" + Color.PURPLE + "|" + Color.RESET);
+                System.out.println(Color.PURPLE + "| " + Color.CYAN + "2)" + Color.RESET + " Remove guest\t\t" + Color.PURPLE + "|" + Color.RESET);
+                System.out.println(Color.PURPLE + "| " + Color.CYAN + "3)" + Color.RESET + " Remove artist\t\t" + Color.PURPLE + "|" + Color.RESET);
+                System.out.println(Color.PURPLE + "| " + Color.CYAN + "4)" + Color.RESET + " Remove event\t\t" + Color.PURPLE + "|" + Color.RESET);
+                System.out.println(Color.PURPLE + "| " + Color.CYAN + "5)" + Color.RESET + " Remove stage\t\t" + Color.PURPLE + "|" + Color.RESET);
+                System.out.println(Color.PURPLE + "| " + Color.YELLOW + "0)" + Color.RESET + " Go back\t\t\t" + Color.PURPLE + "|" + Color.RESET);
+                System.out.println(Color.PURPLE + "-------------------------" + Color.RESET);
+                System.out.print("Choose option: ");
+                switch (scanner.nextInt()) {
+                    case 0 -> {
+                        return;
+                    }
+                    case 1 -> Ticket.removeTicket();
+                    case 2 -> Guest.removeGuest();
+                    case 3 -> Artist.removeArtist();
+                    case 4 -> Event.removeEvent();
+                    case 5 -> Stage.removeStage();
+                    default -> System.out.println(Color.RED + "\nThis option does not exist, please try again." + Color.RESET);
+                }
+            } catch (InputMismatchException ime) {
+                System.out.println(Color.RED + "\nWrong input type! Try again." + Color.RESET);
+                scanner.nextLine();
+            }
+        }
+    }
+
+    /**
+     * Filling the arrays with starting items
+     */
+
+    private static void fillGuests() {
+        Guest.guestArray.add(new Guest(1, "Henk van Vliet"));
+        Guest.guestArray.add(new Guest(2, "Sara van Dam"));
+        Guest.guestArray.add(new Guest(3, "Pieter Lemstra"));
+        Guest.guestArray.add(new Guest(4, "Soufiane Corvers"));
+        Guest.guestArray.add(new Guest(5, "Jaap-Jan Snoeijer"));
+        Guest.guestArray.add(new Guest(6, "Malte de Grauw"));
+        Guest.guestArray.add(new Guest(7, "Myrne Staphorst"));
+        Guest.guestArray.add(new Guest(8, "Yordy Klok"));
+        Guest.guestArray.add(new Guest(9, "Janno Cillessen"));
+        Guest.guestArray.add(new Guest(10, "Hans Janssen"));
     }
 
     private static void fillStages() {
@@ -121,19 +175,6 @@ public class Main {
             } else if (event.getEventId() == 4) Artist.artistArray.add(new Artist(3, "Red Hot Chilli Peppers", event));
             else if (event.getEventId() == 5) Artist.artistArray.add(new Artist(13, "Elton John", event));
         }
-    }
-
-    private static void fillGuests() {
-        Guest.guestArray.add(new Guest(1, "Henk van Vliet"));
-        Guest.guestArray.add(new Guest(2, "Sara van Dam"));
-        Guest.guestArray.add(new Guest(3, "Pieter Lemstra"));
-        Guest.guestArray.add(new Guest(4, "Soufiane Corvers"));
-        Guest.guestArray.add(new Guest(5, "Jaap-Jan Snoeijer"));
-        Guest.guestArray.add(new Guest(6, "Malte de Grauw"));
-        Guest.guestArray.add(new Guest(7, "Myrne Staphorst"));
-        Guest.guestArray.add(new Guest(8, "Yordy Klok"));
-        Guest.guestArray.add(new Guest(9, "Janno Cillessen"));
-        Guest.guestArray.add(new Guest(10, "Hans Janssen"));
     }
 
     private static void fillTickets() {

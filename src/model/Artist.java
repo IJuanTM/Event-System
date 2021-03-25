@@ -7,7 +7,7 @@ public class Artist implements Comparable<Artist> {
 
     private final Integer artistId;
     private final String artistName;
-    private final Event artistEvent;
+    private Event artistEvent;
 
     public static ArrayList<Artist> artistArray = new ArrayList<>();
 
@@ -18,8 +18,12 @@ public class Artist implements Comparable<Artist> {
         Collections.sort(artistArray);
     }
 
+    /**
+     * Artist methods
+     */
+
     public static void listArtists() {
-        System.out.println(Color.GREEN + "\nArtists in system: " + Color.RESET);
+        System.out.println(Color.GREEN + "\nArtists in system: " + Color.RESET + "(" + artistArray.size() + ")");
         for (Artist artist : Artist.artistArray) System.out.println("Id: " + Color.YELLOW + artist.artistId + Color.RESET + "\tName: " + Color.PURPLE + artist.artistName + Color.RESET);
         System.out.print("\nBack to menu (" + Color.YELLOW + "ENTER" + Color.RESET + "): ");
         scanner.nextLine();
@@ -47,7 +51,7 @@ public class Artist implements Comparable<Artist> {
         System.out.println("=========================");
         try {
             // New artistId
-            Integer nextId = artistArray.size() + 1;
+            Integer nextId = Collections.max(artistArray).artistId + 1;
             System.out.println(Color.YELLOW + "ArtistId: " + Color.RESET + nextId);
 
             // Input artistName
@@ -68,7 +72,7 @@ public class Artist implements Comparable<Artist> {
             artistArray.add(new Artist(nextId, inputName, getEvent));
 
             // Print success
-            System.out.println(Color.GREEN + "\nSuccess!" + Color.RESET);
+            System.out.println(Color.GREEN + "\nArtist added!" + Color.RESET);
 
             // Print added artist
             for (Artist artist : artistArray) if (artist.artistId.equals(nextId)) printArtistInfo(artist);
@@ -80,9 +84,54 @@ public class Artist implements Comparable<Artist> {
         }
     }
 
+    public static void removeArtist() {
+        Artist getArtist = null;
+        System.out.println("\nRemove artist:");
+        System.out.println("=========================");
+        try {
+            // Input artistId
+            System.out.print(Color.YELLOW + "ArtistId: " + Color.RESET);
+            Integer inputId = scanner.nextInt();
+            scanner.nextLine();
+
+            // Get artist object by Id
+            if (!(inputId > Collections.max(artistArray).artistId)) {
+                for (Artist artist : Artist.artistArray) if (artist.artistId.equals(inputId)) getArtist = artist;
+            } else throw new NoSuchElementException();
+
+            // Remove artist from array
+            artistArray.remove(getArtist);
+
+            // Print success
+            System.out.println(Color.GREEN + "\nArtist " + Color.YELLOW + inputId + Color.GREEN + " removed!" + Color.RESET);
+
+        } catch (InputMismatchException ime) {
+            System.out.println(Color.RED + "\nWrong input type! Try again." + Color.RESET);
+            scanner.nextLine();
+        } catch (NoSuchElementException nse) {
+            System.out.println(Color.RED + "\nThis input does not exist! Try again." + Color.RESET);
+        }
+    }
+
+    /**
+     * Getters and setters
+     */
+
+    public Integer getArtistId() {
+        return artistId;
+    }
+
     public String getArtistName() {
         return artistName;
     }
+
+    public void setArtistEvent(Event artistEvent) {
+        this.artistEvent = artistEvent;
+    }
+
+    /**
+     * Override Comparable to compare values to array items
+     */
 
     @Override
     public int compareTo(Artist other) {

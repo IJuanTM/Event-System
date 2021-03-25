@@ -7,6 +7,10 @@ public class Gig extends Event {
         super(eventId, eventName, eventType, eventStage, eventDate);
     }
 
+    /**
+     * Override typeName value
+     */
+
     @Override
     public String castTypeName() {
         return "Gig";
