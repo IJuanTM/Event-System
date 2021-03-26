@@ -58,6 +58,8 @@ public class Stage implements Comparable<Stage> {
         } catch (InputMismatchException ime) {
             System.out.println(Color.RED + "\nWrong input type! Try again." + Color.RESET);
             scanner.nextLine();
+        } catch (NullPointerException npe) {
+            System.out.println(Color.RED + "\nThis is not a valid input! Try again." + Color.RESET);
         }
     }
 
@@ -69,6 +71,7 @@ public class Stage implements Comparable<Stage> {
             // Input stageId
             System.out.print(Color.YELLOW + "StageId: " + Color.RESET);
             Integer inputId = scanner.nextInt();
+            if (inputId == 0) throw new NullPointerException();
             scanner.nextLine();
 
             // Get stage object by Id
@@ -76,17 +79,39 @@ public class Stage implements Comparable<Stage> {
                 for (Stage stage : Stage.stageArray) if (stage.stageId.equals(inputId)) getStage = stage;
             } else throw new NoSuchElementException();
 
-            // Remove stage from array
-            stageArray.remove(getStage);
+            while (true) {
+                try {
+                    assert getStage != null;
+                    System.out.println("\nAre you sure you want to delete this stage:");
+                    System.out.println("(" + Color.YELLOW + getStage.stageId + Color.RESET + ", " + Color.PURPLE + getStage.stageName + Color.RESET + ")");
+                    System.out.println("------------");
+                    System.out.println(Color.GREEN + "1) " + Color.RESET + "Yes");
+                    System.out.println(Color.RED + "2) " + Color.RESET + "No");
+                    System.out.println("------------");
+                    System.out.print("Choose option: ");
+                    int input = scanner.nextInt();
+                    scanner.nextLine();
+                    if (input == 1) {
+                        // Remove ticket from array
+                        stageArray.remove(getStage);
 
-            // Print success
-            System.out.println(Color.GREEN + "\nStage " + Color.YELLOW + inputId + Color.GREEN + " removed!" + Color.RESET);
-
+                        // Print success
+                        System.out.println(Color.GREEN + "\nStage " + Color.YELLOW + inputId + Color.GREEN + " removed!" + Color.RESET);
+                    } else if (input == 2) return;
+                    else System.out.println(Color.RED + "\nInvalid input, please try again." + Color.RESET);
+                    return;
+                } catch (InputMismatchException ime) {
+                    System.out.println(Color.RED + "\nWrong input type! Try again." + Color.RESET);
+                    scanner.nextLine();
+                }
+            }
         } catch (InputMismatchException ime) {
             System.out.println(Color.RED + "\nWrong input type! Try again." + Color.RESET);
             scanner.nextLine();
         } catch (NoSuchElementException nse) {
             System.out.println(Color.RED + "\nThis input does not exist! Try again." + Color.RESET);
+        } catch (NullPointerException npe) {
+            System.out.println(Color.RED + "\nThis is not a valid input! Try again." + Color.RESET);
         }
     }
 

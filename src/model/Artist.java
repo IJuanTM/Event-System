@@ -61,6 +61,7 @@ public class Artist implements Comparable<Artist> {
             // Input eventId
             System.out.print(Color.RED + "EventId: " + Color.RESET);
             Integer inputEvent = scanner.nextInt();
+            if (inputEvent == 0) throw new NullPointerException();
             scanner.nextLine();
 
             // Get event object by Id
@@ -81,6 +82,8 @@ public class Artist implements Comparable<Artist> {
             scanner.nextLine();
         } catch (NoSuchElementException nse) {
             System.out.println(Color.RED + "\nThis input does not exist! Try again." + Color.RESET);
+        } catch (NullPointerException npe) {
+            System.out.println(Color.RED + "\nThis is not a valid input! Try again." + Color.RESET);
         }
     }
 
@@ -92,6 +95,7 @@ public class Artist implements Comparable<Artist> {
             // Input artistId
             System.out.print(Color.YELLOW + "ArtistId: " + Color.RESET);
             Integer inputId = scanner.nextInt();
+            if (inputId == 0) throw new NullPointerException();
             scanner.nextLine();
 
             // Get artist object by Id
@@ -99,17 +103,42 @@ public class Artist implements Comparable<Artist> {
                 for (Artist artist : Artist.artistArray) if (artist.artistId.equals(inputId)) getArtist = artist;
             } else throw new NoSuchElementException();
 
-            // Remove artist from array
-            artistArray.remove(getArtist);
+            while (true) {
+                try {
+                    assert getArtist != null;
+                    System.out.println("\nAre you sure you want to delete this artist:");
+                    System.out.println("(" + Color.YELLOW + getArtist.artistId + Color.RESET + ", " +
+                            Color.PURPLE + getArtist.artistName + Color.RESET + ", " +
+                            Color.RED + getArtist.artistEvent.getEventName() + Color.RESET + ")");
+                    System.out.println("------------");
+                    System.out.println(Color.GREEN + "1) " + Color.RESET + "Yes");
+                    System.out.println(Color.RED + "2) " + Color.RESET + "No");
+                    System.out.println("------------");
+                    System.out.print("Choose option: ");
+                    int input = scanner.nextInt();
+                    scanner.nextLine();
+                    if (input == 1) {
+                        // Remove ticket from array
+                        artistArray.remove(getArtist);
 
-            // Print success
-            System.out.println(Color.GREEN + "\nArtist " + Color.YELLOW + inputId + Color.GREEN + " removed!" + Color.RESET);
-
+                        // Print success
+                        System.out.println(Color.GREEN + "\nArtist " + Color.YELLOW + inputId + Color.GREEN + " removed!" + Color.RESET);
+                    } else if (input == 2) {
+                        return;
+                    } else System.out.println(Color.RED + "\nInvalid input, please try again." + Color.RESET);
+                    return;
+                } catch (InputMismatchException ime) {
+                    System.out.println(Color.RED + "\nWrong input type! Try again." + Color.RESET);
+                    scanner.nextLine();
+                }
+            }
         } catch (InputMismatchException ime) {
             System.out.println(Color.RED + "\nWrong input type! Try again." + Color.RESET);
             scanner.nextLine();
         } catch (NoSuchElementException nse) {
             System.out.println(Color.RED + "\nThis input does not exist! Try again." + Color.RESET);
+        } catch (NullPointerException npe) {
+            System.out.println(Color.RED + "\nThis is not a valid input! Try again." + Color.RESET);
         }
     }
 

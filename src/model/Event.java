@@ -32,7 +32,7 @@ abstract public class Event implements Comparable<Event> {
     public static void eventMenu() {
         while (true) {
             try {
-                System.out.println("\nEvents:");
+                System.out.println("\nEvents: (" + eventArray.size() + ")");
                 System.out.println("--------------------------------");
                 for (Event event : Event.eventArray) System.out.println(Color.CYAN + event.eventId + ") " + Color.RESET + event.eventName);
                 System.out.println(Color.YELLOW + "0) " + Color.RESET + "Go back");
@@ -110,11 +110,13 @@ abstract public class Event implements Comparable<Event> {
             // Input eventType
             System.out.print(Color.GREEN + "EventType: " + Color.RESET);
             int inputType = scanner.nextInt();
+            if (inputType == 0) throw new NullPointerException();
             scanner.nextLine();
 
             // Input eventStage
             System.out.print(Color.RED + "StageId: " + Color.RESET);
             Integer inputStage = scanner.nextInt();
+            if (inputStage == 0) throw new NullPointerException();
             scanner.nextLine();
 
             // Get stage object by Id
@@ -144,6 +146,8 @@ abstract public class Event implements Comparable<Event> {
             System.out.println(Color.RED + "\nThis input does not exist! Try again." + Color.RESET);
         } catch (DateTimeParseException dtp) {
             System.out.println(Color.YELLOW + "\nWrong date format used! Use yyyy-MM-dd." + Color.RESET);
+        } catch (NullPointerException npe) {
+            System.out.println(Color.RED + "\nThis is not a valid input! Try again." + Color.RESET);
         }
     }
 
@@ -155,6 +159,7 @@ abstract public class Event implements Comparable<Event> {
             // Input eventId
             System.out.print(Color.YELLOW + "EventId: " + Color.RESET);
             Integer inputId = scanner.nextInt();
+            if (inputId == 0) throw new NullPointerException();
             scanner.nextLine();
 
             // Get event object by Id
@@ -162,17 +167,41 @@ abstract public class Event implements Comparable<Event> {
                 for (Event event : Event.eventArray) if (event.eventId.equals(inputId)) getEvent = event;
             } else throw new NoSuchElementException();
 
-            // Remove event from array
-            eventArray.remove(getEvent);
+            while (true) {
+                try {
+                    assert getEvent != null;
+                    System.out.println("\nAre you sure you want to delete this event:");
+                    System.out.println("(" + Color.YELLOW + getEvent.eventId+ Color.RESET + ", " +
+                            Color.PURPLE + getEvent.eventName + Color.RESET + ", " +
+                            Color.RED + getEvent.eventType + Color.RESET + ")");
+                    System.out.println("------------");
+                    System.out.println(Color.GREEN + "1) " + Color.RESET + "Yes");
+                    System.out.println(Color.RED + "2) " + Color.RESET + "No");
+                    System.out.println("------------");
+                    System.out.print("Choose option: ");
+                    int input = scanner.nextInt();
+                    scanner.nextLine();
+                    if (input == 1) {
+                        // Remove ticket from array
+                        eventArray.remove(getEvent);
 
-            // Print success
-            System.out.println(Color.GREEN + "\nEvent " + Color.YELLOW + inputId + Color.GREEN + " removed!" + Color.RESET);
-
+                        // Print success
+                        System.out.println(Color.GREEN + "\nEvent " + Color.YELLOW + inputId + Color.GREEN + " removed!" + Color.RESET);
+                    } else if (input == 2) return;
+                    else System.out.println(Color.RED + "\nInvalid input, please try again." + Color.RESET);
+                    return;
+                } catch (InputMismatchException ime) {
+                    System.out.println(Color.RED + "\nWrong input type! Try again." + Color.RESET);
+                    scanner.nextLine();
+                }
+            }
         } catch (InputMismatchException ime) {
             System.out.println(Color.RED + "\nWrong input type! Try again." + Color.RESET);
             scanner.nextLine();
         } catch (NoSuchElementException nse) {
             System.out.println(Color.RED + "\nThis input does not exist! Try again." + Color.RESET);
+        } catch (NullPointerException npe) {
+            System.out.println(Color.RED + "\nThis is not a valid input! Try again." + Color.RESET);
         }
     }
 

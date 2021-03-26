@@ -25,7 +25,7 @@ public class Ticket implements Comparable<Ticket> {
     public static void ticketMenu() {
         while (true) {
             try {
-                System.out.println("\nTickets:");
+                System.out.println("\nTickets: (" + ticketArray.size() + ")");
                 System.out.println("------------------------");
                 for (Ticket ticket : Ticket.ticketArray) System.out.println(Color.CYAN + ticket.ticketId + ") " + Color.RESET + ticket.ticketGuest.getGuestName());
                 System.out.println(Color.YELLOW + "0) " + Color.RESET + "Go back");
@@ -68,6 +68,7 @@ public class Ticket implements Comparable<Ticket> {
             // Input guestId
             System.out.print(Color.PURPLE + "GuestId: " + Color.RESET);
             Integer inputGuest = scanner.nextInt();
+            if (inputGuest == 0) throw new NullPointerException();
             scanner.nextLine();
 
             // Get guest object by Id
@@ -78,6 +79,7 @@ public class Ticket implements Comparable<Ticket> {
             // Input eventId
             System.out.print(Color.RED + "EventId: " + Color.RESET);
             Integer inputEvent = scanner.nextInt();
+            if (inputEvent == 0) throw new NullPointerException();
             scanner.nextLine();
 
             // Get event object by Id
@@ -98,6 +100,8 @@ public class Ticket implements Comparable<Ticket> {
             scanner.nextLine();
         } catch (NoSuchElementException nse) {
             System.out.println(Color.RED + "\nThis input does not exist! Try again." + Color.RESET);
+        } catch (NullPointerException npe) {
+            System.out.println(Color.RED + "\nThis is not a valid input! Try again." + Color.RESET);
         }
     }
 
@@ -109,6 +113,7 @@ public class Ticket implements Comparable<Ticket> {
             // Input ticketId
             System.out.print(Color.YELLOW + "TicketId: " + Color.RESET);
             Integer inputId = scanner.nextInt();
+            if (inputId == 0) throw new NullPointerException();
             scanner.nextLine();
 
             // Get ticket object by Id
@@ -116,17 +121,41 @@ public class Ticket implements Comparable<Ticket> {
                 for (Ticket ticket : Ticket.ticketArray) if (ticket.ticketId.equals(inputId)) getTicket = ticket;
             } else throw new NoSuchElementException();
 
-            // Remove ticket from array
-            ticketArray.remove(getTicket);
+            while (true) {
+                try {
+                    assert getTicket != null;
+                    System.out.println("\nAre you sure you want to delete this ticket:");
+                    System.out.println("(" + Color.YELLOW + getTicket.ticketId + Color.RESET + ", " +
+                            Color.PURPLE + getTicket.ticketGuest.getGuestName() + Color.RESET + ", " +
+                            Color.RED + getTicket.ticketEvent.getEventName() + Color.RESET + ")");
+                    System.out.println("------------");
+                    System.out.println(Color.GREEN + "1) " + Color.RESET + "Yes");
+                    System.out.println(Color.RED + "2) " + Color.RESET + "No");
+                    System.out.println("------------");
+                    System.out.print("Choose option: ");
+                    int input = scanner.nextInt();
+                    scanner.nextLine();
+                    if (input == 1) {
+                        // Remove ticket from array
+                        ticketArray.remove(getTicket);
 
-            // Print success
-            System.out.println(Color.GREEN + "\nTicket " + Color.YELLOW + inputId + Color.GREEN + " removed!" + Color.RESET);
-
+                        // Print success
+                        System.out.println(Color.GREEN + "\nTicket " + Color.YELLOW + inputId + Color.GREEN + " removed!" + Color.RESET);
+                    } else if (input == 2) return;
+                    else System.out.println(Color.RED + "\nInvalid input, please try again." + Color.RESET);
+                    return;
+                } catch (InputMismatchException ime) {
+                    System.out.println(Color.RED + "\nWrong input type! Try again." + Color.RESET);
+                    scanner.nextLine();
+                }
+            }
         } catch (InputMismatchException ime) {
             System.out.println(Color.RED + "\nWrong input type! Try again." + Color.RESET);
             scanner.nextLine();
         } catch (NoSuchElementException nse) {
             System.out.println(Color.RED + "\nThis input does not exist! Try again." + Color.RESET);
+        } catch (NullPointerException npe) {
+            System.out.println(Color.RED + "\nThis is not a valid input! Try again." + Color.RESET);
         }
     }
 
