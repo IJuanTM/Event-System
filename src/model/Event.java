@@ -205,9 +205,11 @@ abstract public class Event implements Comparable<Event> {
         }
     }
 
-    public String castTypeName() {
-        return eventType.toString();
-    }
+    /**
+     * Type name casting
+     */
+
+    public abstract String castTypeName();
 
     /**
      * Getters and setters
