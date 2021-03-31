@@ -35,7 +35,7 @@ public class Artist implements Comparable<Artist> {
         return artistList;
     }
 
-    public static void printArtistInfo(Artist artist) {
+    private static void printArtistInfo(Artist artist) {
         System.out.println("\nArtist info:");
         System.out.println("=========================");
         System.out.println(Color.YELLOW + "Id: " + Color.RESET + artist.artistId);

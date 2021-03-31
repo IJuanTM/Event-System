@@ -8,6 +8,7 @@ public class Main {
     private static final Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
+        fillUsers();
         fillGuests();
         fillStages();
         fillEvents();
@@ -16,12 +17,51 @@ public class Main {
 
         System.out.println(Color.GREEN + "\nWelcome to the Event System\u2122" + Color.RESET);
 
-        mainMenu();
+        loginUser();
     }
 
     /**
      * Menus
      */
+
+    private static void loginUser() {
+        while (true) {
+            try {
+                System.out.println(Color.CYAN + "\nLogin menu:" + Color.RESET);
+                System.out.println(Color.CYAN + "---------------------" + Color.RESET);
+                System.out.println(Color.CYAN + "| " + Color.GREEN + "1)" + Color.RESET + " Login\t\t\t" + Color.CYAN + "|" + Color.RESET);
+                System.out.println(Color.CYAN + "| " + Color.RED + "0)" + Color.RESET + " Exit program\t" + Color.CYAN + "|" + Color.RESET);
+                System.out.println(Color.CYAN + "---------------------" + Color.RESET);
+                System.out.print("Choose option: ");
+                int input = scanner.nextInt();
+                scanner.nextLine();
+                if (input == 1) {
+                    System.out.print("\nUsername: ");
+                    String inputName = scanner.nextLine();
+                    System.out.print("Password: ");
+                    String inputPassword = scanner.nextLine();
+                    for (User user : User.userArray) {
+                        if ((user.getUserName().equals(inputName)) && (user.getUserPassword().equals(User.encryptPassword(inputPassword)))) {
+                            System.out.println(Color.GREEN + "\nLogin successful" + Color.RESET);
+                            mainMenu();
+                        } else System.out.println(Color.RED + "\nWrong credentials! Try again." + Color.RESET);
+                    }
+                } else if (input == 0) {
+                    System.out.println(Color.RED + "\nExiting program..." + Color.RESET);
+                    System.exit(0);
+                } else if (input == 1234) {
+                    System.out.println("\n============================================================");
+                    System.out.print(Color.RED + "ENTER NEW PASSWORD: " + Color.RESET);
+                    String inputNewPassword = scanner.nextLine();
+                    System.out.println(Color.YELLOW + "GENERATED HASH: " + Color.RESET + User.encryptPassword(inputNewPassword) + Color.RESET);
+                    System.out.println("============================================================");
+                }
+            } catch (InputMismatchException ime) {
+                System.out.println(Color.RED + "\nWrong input type! Try again." + Color.RESET);
+                scanner.nextLine();
+            }
+        }
+    }
 
     private static void mainMenu() {
         while (true) {
@@ -36,11 +76,14 @@ public class Main {
                 System.out.println(Color.YELLOW + "| " + Color.CYAN + "6)" + Color.RESET + " List all guests\t\t\t" + Color.YELLOW + "|" + Color.RESET);
                 System.out.println(Color.YELLOW + "| " + Color.CYAN + "7)" + Color.RESET + " List all artists\t\t\t" + Color.YELLOW + "|" + Color.RESET);
                 System.out.println(Color.YELLOW + "| " + Color.CYAN + "8)" + Color.RESET + " List all stages\t\t\t" + Color.YELLOW + "|" + Color.RESET);
-                System.out.println(Color.YELLOW + "| " + Color.RED + "0)" + Color.RESET + " Exit program\t\t\t\t" + Color.YELLOW + "|" + Color.RESET);
+                System.out.println(Color.YELLOW + "| " + Color.RED + "0)" + Color.RESET + " Log out\t\t\t\t\t" + Color.YELLOW + "|" + Color.RESET);
                 System.out.println(Color.YELLOW + "---------------------------------" + Color.RESET);
                 System.out.print("Choose option: ");
                 switch (scanner.nextInt()) {
-                    case 0 -> System.exit(0);
+                    case 0 -> {
+                        System.out.println(Color.RED + "\nLogging out..." + Color.RESET);
+                        return;
+                    }
                     case 1 -> addMenu();
                     case 2 -> removeMenu();
                     case 3 -> Ticket.ticketMenu();
@@ -124,6 +167,10 @@ public class Main {
      * Filling the arrays with starting items
      */
 
+    private static void fillUsers() {
+        User.userArray.add(new User("Admin", "a94a8fe5ccb19ba61c4c0873d391e987982fbbd3"));
+    }
+
     private static void fillGuests() {
         Guest.guestArray.add(new Guest(1, "Henk van Vliet"));
         Guest.guestArray.add(new Guest(2, "Sara van Dam"));
@@ -148,12 +195,12 @@ public class Main {
     private static void fillEvents() {
         for (Stage stage : Stage.stageArray) {
             if (stage.getStageId() == 1) {
-                Event.eventArray.add(new Gig(2, "Ed Sheeran Tour 2021", 2, stage, LocalDate.parse("2021-07-12")));
-                Event.eventArray.add(new Gig(5, "Elton John Tour", 2, stage, LocalDate.parse("2021-04-22")));
-            } else if (stage.getStageId() == 2) Event.eventArray.add(new Festival(1, "Pinkpop 2021", 1, stage, LocalDate.parse("2021-08-22")));
-            else if (stage.getStageId() == 3) Event.eventArray.add(new Festival(3, "Lowlands 2021", 1, stage, LocalDate.parse("2021-05-07")));
+                Event.eventArray.add(new Gig(2, "Ed Sheeran Tour 2021", 2, stage, LocalDate.parse("2021-03-12")));
+                Event.eventArray.add(new Gig(5, "Elton John Tour", 2, stage, LocalDate.parse("2021-09-22")));
+            } else if (stage.getStageId() == 2) Event.eventArray.add(new Festival(1, "Pinkpop 2021", 1, stage, LocalDate.parse("2021-05-22")));
+            else if (stage.getStageId() == 3) Event.eventArray.add(new Festival(3, "Lowlands 2021", 1, stage, LocalDate.parse("2021-08-07")));
             else if (stage.getStageId() == 4) Event.eventArray.add(new Gig(4, "Red Hot Chilli Peppers Live", 2, stage, LocalDate.parse("2021-05-02")));
-            else if (stage.getStageId() == 5) Event.eventArray.add(new Show(6, "Queen Tribute Concert", 3, stage, LocalDate.parse("2021-03-12")));
+            else if (stage.getStageId() == 5) Event.eventArray.add(new Show(6, "Queen Tribute Concert", 3, stage, LocalDate.parse("2021-04-06")));
         }
     }
 

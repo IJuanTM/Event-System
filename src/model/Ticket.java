@@ -44,7 +44,7 @@ public class Ticket implements Comparable<Ticket> {
         }
     }
 
-    public static void printTicketInfo(Ticket ticket) {
+    private static void printTicketInfo(Ticket ticket) {
         System.out.println("\nTicket info:");
         System.out.println("=========================");
         System.out.println(Color.YELLOW + "Id: " + Color.RESET + ticket.ticketId);

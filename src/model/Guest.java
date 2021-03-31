@@ -26,7 +26,7 @@ public class Guest implements Comparable<Guest> {
         scanner.nextLine();
     }
 
-    public static void printGuestInfo(Guest guest) {
+    private static void printGuestInfo(Guest guest) {
         System.out.println("\nGuest info:");
         System.out.println("=========================");
         System.out.println(Color.YELLOW + "Id: " + Color.RESET + guest.guestId);

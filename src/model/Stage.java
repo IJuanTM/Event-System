@@ -26,7 +26,7 @@ public class Stage implements Comparable<Stage> {
         scanner.nextLine();
     }
 
-    public static void printStageInfo(Stage stage) {
+    private static void printStageInfo(Stage stage) {
         System.out.println("\nStage info:");
         System.out.println("=========================");
         System.out.println(Color.YELLOW + "Id: " + Color.RESET + stage.stageId);

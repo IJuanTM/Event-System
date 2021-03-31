@@ -61,7 +61,7 @@ abstract public class Event implements Comparable<Event> {
         scanner.nextLine();
     }
 
-    public static void printEventInfo(Event event) {
+    private static void printEventInfo(Event event) {
         System.out.println("\nEvent info:");
         System.out.println("=========================");
         ArrayList<Artist> artists = Artist.getArtistByEvent(event);
@@ -77,14 +77,14 @@ abstract public class Event implements Comparable<Event> {
             try {
                 System.out.println("\nOptions:");
                 System.out.println("--------------------------------");
-                System.out.println(Color.CYAN + "1)" + Color.RESET + " Add artist");
+                System.out.println(Color.CYAN + "1)" + Color.RESET + " Set artist");
                 System.out.println(Color.YELLOW + "0)" + Color.RESET + " Go back");
                 System.out.println("--------------------------------");
                 System.out.print("Choose option: ");
                 int input = scanner.nextInt();
                 scanner.nextLine();
                 if (input == 0) return;
-                else if (input == 1) addArtistToEvent(event);
+                else if (input == 1) setArtistEvent(event);
                 else System.out.println(Color.RED + "\nInvalid input, please try again." + Color.RESET);
                 return;
             } catch (InputMismatchException ime) {
@@ -171,7 +171,7 @@ abstract public class Event implements Comparable<Event> {
                 try {
                     assert getEvent != null;
                     System.out.println("\nAre you sure you want to delete this event:");
-                    System.out.println("(" + Color.YELLOW + getEvent.eventId+ Color.RESET + ", " +
+                    System.out.println("(" + Color.YELLOW + getEvent.eventId + Color.RESET + ", " +
                             Color.PURPLE + getEvent.eventName + Color.RESET + ", " +
                             Color.RED + getEvent.eventType + Color.RESET + ")");
                     System.out.println("------------");
@@ -205,8 +205,28 @@ abstract public class Event implements Comparable<Event> {
         }
     }
 
-    public static void addArtistToEvent(Event event) {
-        System.out.println("\nAdd artist:");
+    public String castTypeName() {
+        return eventType.toString();
+    }
+
+    /**
+     * Getters and setters
+     */
+
+    public Integer getEventId() {
+        return eventId;
+    }
+
+    public String getEventName() {
+        return eventName;
+    }
+
+    public LocalDate getEventDate() {
+        return eventDate;
+    }
+
+    private static void setArtistEvent(Event event) {
+        System.out.println("\nSet artist:");
         System.out.println("=========================");
         try {
             // Input artistId
@@ -230,26 +250,6 @@ abstract public class Event implements Comparable<Event> {
         } catch (NoSuchElementException nse) {
             System.out.println(Color.RED + "\nThis input does not exist! Try again." + Color.RESET);
         }
-    }
-
-    public String castTypeName() {
-        return eventType.toString();
-    }
-
-    /**
-     * Getters and setters
-     */
-
-    public Integer getEventId() {
-        return eventId;
-    }
-
-    public String getEventName() {
-        return eventName;
-    }
-
-    public LocalDate getEventDate() {
-        return eventDate;
     }
 
     /**
